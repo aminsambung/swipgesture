@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GestureNav Setup"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="24dp"/>
+
+    <Button
+        android:id="@+id/btnAccessibility"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="1. Aktifkan Aksesibilitas"
+        android:layout_marginBottom="12dp"/>
+
+    <Button
+        android:id="@+id/btnAdmin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="2. Aktifkan Device Admin (untuk kunci layar)"
+        android:layout_marginBottom="12dp"/>
+
+    <Button
+        android:id="@+id/btnOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="3. Izin Overlay (opsional)"
+        android:layout_marginBottom="12dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="\nPanduan:\n• Swipe dari tepi kiri/kanan → Kembali\n• Swipe dari bawah ke atas → Recent Apps\n• Ketuk 2x pada area kosong → Kunci layar\n\nCatatan: Membuka layar saat mati TIDAK didukung Android tanpa root."
+        android:textSize="14sp"
+        android:layout_marginTop="24dp"/>
+</LinearLayout>
