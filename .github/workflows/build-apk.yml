@@ -3,8 +3,6 @@ name: Build Android APK
 on:
   push:
     branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
   workflow_dispatch:
 
 jobs:
@@ -21,21 +19,18 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
-    # Menggunakan versi terbaru dan mengosongkan packages default
-    # untuk menghindari error cmdline-tools usang
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
       with:
         cmdline-tools-version: 12266719
         packages: ''
 
-    # Langkah otomatis: Memastikan file gradle-wrapper.jar tersedia
-    # Jika belum ada di repo, workflow akan mengunduhnya secara otomatis
     - name: Ensure Gradle Wrapper JAR exists
       run: |
         if [ ! -f gradle/wrapper/gradle-wrapper.jar ]; then
-          echo "Wrapper JAR tidak ditemukan, mengunduh..."
+          echo "Wrapper JAR tidak ditemukan, mengunduh versi 8.2.0..."
           mkdir -p gradle/wrapper
+          # Pastikan URL ini v8.2.0
           curl -L -o gradle/wrapper/gradle-wrapper.jar https://github.com/gradle/gradle/raw/v8.2.0/gradle/wrapper/gradle-wrapper.jar
         else
           echo "Wrapper JAR sudah ada."
