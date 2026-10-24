@@ -19,38 +19,22 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
+    # 1. Setup Gradle versi 8.2 secara paksa
+    - name: Setup Gradle 8.2
+      uses: gradle/gradle-build-action@v3
+      with:
+        gradle-version: 8.2
+
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
       with:
         cmdline-tools-version: 12266719
         packages: ''
 
-    - name: Ensure Gradle Wrapper JAR exists
-      run: |
-        if [ ! -f gradle/wrapper/gradle-wrapper.jar ]; then
-          echo "Wrapper JAR tidak ditemukan, mengunduh versi 8.2.0..."
-          mkdir -p gradle/wrapper
-          # Pastikan URL ini v8.2.0
-          curl -L -o gradle/wrapper/gradle-wrapper.jar https://github.com/gradle/gradle/raw/v8.2.0/gradle/wrapper/gradle-wrapper.jar
-        else
-          echo "Wrapper JAR sudah ada."
-        fi
-
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-
-    - name: Cache Gradle packages
-      uses: actions/cache@v4
-      with:
-        path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-        restore-keys: |
-          ${{ runner.os }}-gradle-
-
+    # 2. Hapus pemanggilan ./gradlew, langsung gunakan perintah 'gradle'
+    # karena action di atas sudah menyiapkan Gradle 8.2
     - name: Build Debug APK
-      run: ./gradlew assembleDebug --stacktrace
+      run: gradle assembleDebug --stacktrace
 
     - name: Upload APK artifact
       uses: actions/upload-artifact@v4
