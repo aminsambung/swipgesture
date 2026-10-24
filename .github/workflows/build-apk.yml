@@ -1,19 +1,18 @@
-name: Release APK
+name: Build Android APK
 
 on:
   push:
-    tags:
-      - 'v*'
-
-permissions:
-  contents: write
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
 
 jobs:
-  release:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
+    - name: Checkout code
       uses: actions/checkout@v4
 
     - name: Set up JDK 17
@@ -22,23 +21,45 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
+    # Menggunakan versi terbaru dan mengosongkan packages default
+    # untuk menghindari error cmdline-tools usang
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
+      with:
+        cmdline-tools-version: 12266719
+        packages: ''
+
+    # Langkah otomatis: Memastikan file gradle-wrapper.jar tersedia
+    # Jika belum ada di repo, workflow akan mengunduhnya secara otomatis
+    - name: Ensure Gradle Wrapper JAR exists
+      run: |
+        if [ ! -f gradle/wrapper/gradle-wrapper.jar ]; then
+          echo "Wrapper JAR tidak ditemukan, mengunduh..."
+          mkdir -p gradle/wrapper
+          curl -L -o gradle/wrapper/gradle-wrapper.jar https://github.com/gradle/gradle/raw/v8.2.0/gradle/wrapper/gradle-wrapper.jar
+        else
+          echo "Wrapper JAR sudah ada."
+        fi
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
-    - name: Build Debug APK (unsigned)
-      run: ./gradlew assembleDebug
-
-    - name: Rename APK
-      run: |
-        mkdir -p release
-        cp app/build/outputs/apk/debug/app-debug.apk \
-           release/GestureNav-${{ github.ref_name }}.apk
-
-    - name: Create Release
-      uses: softprops/action-gh-release@v2
+    - name: Cache Gradle packages
+      uses: actions/cache@v4
       with:
-        files: release/GestureNav-${{ github.ref_name }}.apk
-        generate_release_notes: true
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+
+    - name: Build Debug APK
+      run: ./gradlew assembleDebug --stacktrace
+
+    - name: Upload APK artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: GestureNav-debug-apk
+        path: app/build/outputs/apk/debug/app-debug.apk
+        retention-days: 30
