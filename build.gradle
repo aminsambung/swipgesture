@@ -1,5 +1,16 @@
 buildscript {
+    repositories {
+        google()       // Wajib ada untuk plugin Android
+        mavenCentral() // Untuk dependensi lain
+    }
     dependencies {
-        classpath 'com.android.tools.build:gradle:9.0.1' // Atau versi 9.x terbaru
+        classpath 'com.android.tools.build:gradle:9.0.1'
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
     }
 }
