@@ -1,10 +1,11 @@
 buildscript {
     repositories {
-        google()       // Wajib ada untuk plugin Android
-        mavenCentral() // Untuk dependensi lain
+        google()
+        mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:9.0.1'
+        // Gunakan AGP 8.1.4 karena cocok dengan Gradle 8.2
+        classpath 'com.android.tools.build:gradle:8.1.4'
     }
 }
 
