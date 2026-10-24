@@ -5,13 +5,15 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    // PREFER_PROJECT memungkinkan deklarasi repositories di build.gradle root
+    repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
     repositories {
         google()
         mavenCentral()
     }
 }
 
-rootProject.name = "GestureNav"
+rootProject.name = "swipgesture" // Sesuaikan dengan nama proyek/folder Anda
 include ':app'
