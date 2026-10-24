@@ -4,11 +4,11 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        // Gunakan AGP 8.1.4 karena cocok dengan Gradle 8.2
-        classpath 'com.android.tools.build:gradle:8.1.4'
+        classpath 'com.android.tools.build:gradle:8.1.4' // AGP 8.1.4 cocok dengan Gradle 8.2
     }
 }
 
+// Blok allprojects ini sekarang diizinkan karena settings.gradle sudah diubah
 allprojects {
     repositories {
         google()
