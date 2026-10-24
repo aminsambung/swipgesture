@@ -1,17 +1,28 @@
-apply plugin: 'com.android.application'
+plugins {
+    id 'com.android.application'
+}
 
 android {
-    compileSdkVersion 33
+    namespace 'com.example.gesturenav'
+    compileSdk 33
+
     defaultConfig {
         applicationId "com.example.gesturenav"
-        minSdkVersion 28          // Android 9
-        targetSdkVersion 28       // sengaja 28 supaya TYPE_ACCESSIBILITY_OVERLAY tidak kena batasan
+        minSdk 28
+        targetSdk 28
         versionCode 1
         versionName "1.0"
     }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 }
 
