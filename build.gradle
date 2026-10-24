@@ -1,15 +1,5 @@
-// Top-level build file
 buildscript {
-    repositories {
-        google()
-        mavenCentral()
-    }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.1.4'
+        classpath 'com.android.tools.build:gradle:9.0.1' // Atau versi 9.x terbaru
     }
 }
-
-// Jika Anda memakai plugin DSL (cara modern), bisa pakai ini sebagai gantinya:
-// plugins {
-//     id 'com.android.application' version '8.1.4' apply false
-// }
