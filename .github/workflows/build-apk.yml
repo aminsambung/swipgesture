@@ -1,16 +1,19 @@
-name: Build Android APK
+name: Release APK
 
 on:
   push:
-    branches: [ main, master ]
-  workflow_dispatch:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
 
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: Checkout
       uses: actions/checkout@v4
 
     - name: Set up JDK 17
@@ -25,11 +28,17 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
-    - name: Build Debug APK
+    - name: Build Debug APK (unsigned)
       run: ./gradlew assembleDebug
 
-    - name: Upload APK
-      uses: actions/upload-artifact@v4
+    - name: Rename APK
+      run: |
+        mkdir -p release
+        cp app/build/outputs/apk/debug/app-debug.apk \
+           release/GestureNav-${{ github.ref_name }}.apk
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v2
       with:
-        name: GestureNav-debug
-        path: app/build/outputs/apk/debug/app-debug.apk
+        files: release/GestureNav-${{ github.ref_name }}.apk
+        generate_release_notes: true
